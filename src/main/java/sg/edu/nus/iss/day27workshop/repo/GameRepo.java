@@ -77,4 +77,11 @@ public class GameRepo {
         return mt.find(query, Game.class);
     }
 
+    public Game findById(Integer id) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(id));
+
+        return mt.findOne(query, Game.class, "games");
+    }
+
 }

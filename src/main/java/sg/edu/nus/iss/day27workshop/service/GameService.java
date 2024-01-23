@@ -73,11 +73,17 @@ public class GameService {
             result.setEdited(list);
         }
 
+        // add the old comment to edited
         EditedComment e = new EditedComment();
         e.setComment((result.getComment()));
         e.setRating(result.getRating());
         e.setPosted(result.getPosted());
+        result.getEdited().add(e);
 
+        // update the existing reviewId record with new comment & rating
+        result.setComment(ec.getComment());
+        result.setRating(ec.getRating());
+        result.setPosted(LocalDateTime.now());
         return reviewRepo.updateReview(result);
     }
 }

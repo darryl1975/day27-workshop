@@ -31,7 +31,7 @@ public class ReviewRepo {
 
     public long updateReview(Review r) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("_id").is(r.getReviewId()));
+        query.addCriteria(Criteria.where("_id").is(r.getCid()));
 
         Update updateOps = new Update()
         .set("rating", r.getRating())

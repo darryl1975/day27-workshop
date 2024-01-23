@@ -4,14 +4,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+// import org.springframework.data.mongodb.core.mapping.Document;
+
+import org.bson.Document;
 
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 
-@Document(collection = "reviews")
+// @Document(collection = "reviews")
 public class Review extends EditedComment {
 
     @Id
@@ -72,9 +74,23 @@ public class Review extends EditedComment {
         this.edited.add(e);
     }
 
+    // used to convert Document to entity object
+    public Review create(Document d) {
+        Review r = new Review();
+        r.setGameId(d.getInteger("gameId"));
+        r.setComment(d.getString("comment"));
+        r.setRating(d.getInteger("rating"));
+        r.setUser(d.getString("user"));
+        r.setPosted(LocalDateTime.now());
+        r.setCid(d.getInteger("cid"));
+        
+        return r;
+    }
+
+    // used to convert from entity object to json string
     public JsonObject toJson() {
         return Json.createObjectBuilder()
-                .add("gid", getGameId())
+                .add("gameId", getGameId())
                 .add("comment", getComment())
                 .add("rating", getRating())
                 .add("user", getUser())
@@ -83,6 +99,7 @@ public class Review extends EditedComment {
                 .build();
     }
 
+    // used to convert from entity object to json string
     public JsonObject toJsonEdited() {
         boolean isEditedComment = false;
         if (this.getEdited() != null) {
@@ -97,7 +114,7 @@ public class Review extends EditedComment {
         }
 
         return Json.createObjectBuilder()
-                .add("gid", getGameId())
+                .add("gameId", getGameId())
                 .add("comment", getComment())
                 .add("rating", getRating())
                 .add("user", getUser())

@@ -3,12 +3,13 @@ package sg.edu.nus.iss.day27workshop.model;
 import java.io.Serializable;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+// import org.springframework.data.mongodb.core.mapping.Document;
 
+import org.bson.Document;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 
-@Document(collection = "games")
+// @Document(collection = "games")
 public class Game implements Serializable {
 
     @Id
@@ -74,6 +75,18 @@ public class Game implements Serializable {
         return "Game [gid=" + gid + ", year=" + year + ", rating=" + rating + ", userRating=" + userRating + "]";
     }
 
+    // used to convert from Document to entity object
+    public static Game create(Document d) { 
+        Game game = new Game();
+        game.setGid(d.getInteger("gameId"));
+        game.setName(d.getString("name"));
+        game.setYear(d.getInteger("year"));
+        game.setRating(d.getInteger("rating"));
+        game.setUserRating(d.getInteger("userRating"));
+        return game;
+    }
+
+    // used to convert from entity object to json string
     public JsonObject toJson() {
         return Json.createObjectBuilder()
                 .add("gid", getGid())
